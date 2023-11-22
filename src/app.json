@@ -1,0 +1,22 @@
+{
+    "title": "Случайная цитата",
+    "subtitle": "мысли великих",
+    "description": "Изречения англоязычных авторов с переводом не русский язык",
+    "keywords": "цитата, изречение, афоризм",
+    "author": "Михаил Беляков",
+    "license": "CC_BY-NC_4.0",
+    "url": "http://quotations.yababay.me",
+    "bootstrap": "remote",
+    "brand": "Quotations",
+    "menu": [
+        { "title": "Home", "href": "https://yababay.me"},
+        { 
+            "title": "Articles", "items": [
+                { "title": "One", "href": "/articles/one"},
+                { "title": "Two", "href": "/articles/two"},
+                { "title": "Three", "href": "/articles/three"}
+            ]
+        },
+        { "title": "Github", "href": "https://github.com/yababay"}
+    ]
+}
