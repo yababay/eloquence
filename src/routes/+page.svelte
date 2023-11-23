@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- script lang="ts">
     import type { EnglishRussian } from '$lib/types'
     export let data: EnglishRussian
     const { english, russian } = data
@@ -13,4 +13,6 @@
         {/if}
     </blockquote>
     <p>{russianAuthor.trim()}</p>
-</article>
+</article -->
+
+<a href="/admin">admin</a>

@@ -12,6 +12,4 @@
     const seo: SeoProps = { author, brand, title, subtitle, description, keywords, license, url }
 </script>
 
-<Layout {seo} {bootstrap} >
-    <slot />
-</Layout>
+<slot />
