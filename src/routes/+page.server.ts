@@ -1,19 +1,30 @@
 import lineByLine from 'n-readlines'
 import type { EnglishRussian } from '$lib/types.js'
-import { existsSync } from 'fs'
+import { existsSync, readFileSync } from 'fs'
 import { getRepository, getClient } from '$lib/server'
 import { QUOTATIONS_PATH } from '$env/static/private'
+import { EntityId } from 'redis-om'
 
 let qPath = `${QUOTATIONS_PATH}/quotations.txt`
-if(!existsSync(qPath)) qPath = '.db/quotations.txt'
-let isScrolled = false
 
+let isScrolled = false
 let liner: any
 const LAST_LINE = 'quotations_last_line'
 
 const scrollDown = async () => {
-    liner = new lineByLine(qPath)
     const client = await getClient()
+    const llPath = `${QUOTATIONS_PATH}/LAST_LINE`
+    if(existsSync(llPath)){
+        const ll = readFileSync(llPath, 'utf8')
+        await client.set(LAST_LINE, ll.trim()) 
+    }
+    /*const expPath = `${QUOTATIONS_PATH}/export.json`
+    if(existsSync(expPath)){
+        const quots = JSON.parse(readFileSync(expPath, 'utf8'))
+        const repo = await getRepository()
+        await Promise.all(quots.map((quot: EnglishRussian) => repo.save(quot))) 
+    }*/
+    liner = new lineByLine(qPath)
     if(await client.exists(LAST_LINE)){
         let chunk: false | Buffer
         let lastLine = await client.get(LAST_LINE)
@@ -47,7 +58,7 @@ const readQuotation = async (): Promise<EnglishRussian> => {
     while(chunk = liner.next()){
         const line = chunk.toString('utf8').trim()
         if(reg.test(line)) {
-            await client.set(LAST_LINE, line)
+            (await getClient()).set(LAST_LINE, line)
             const russian = arrayToString(buff_ru)
             if(typeof russian !== 'string') throw 'russian is required 1'
             const english = arrayToString(buff_en)
@@ -80,7 +91,8 @@ export const actions = {
         if(russian || english) {
             const repo = await getRepository()
             if(!russian) throw 'russian is required 2'
-            await repo.save(english ? {russian, english} : {russian})
+            const entity = await repo.save(english ? {russian, english} : {russian})
+            console.log(entity[EntityId])
         } 
         return await readQuotation()
     }
