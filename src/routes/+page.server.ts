@@ -1,33 +1,37 @@
 import lineByLine from 'n-readlines'
 import type { EnglishRussian } from '$lib/types.js'
-import { writeFileSync, readFileSync, existsSync } from 'fs'
-import { createClient } from 'redis'
-import shortid from 'shortid'
+import { existsSync } from 'fs'
+import { getRepository, getClient } from '$lib/server'
 import { QUOTATIONS_PATH } from '$env/static/private'
-
-const client = createClient({ url: process.env.REDIS_URL ? process.env.REDIS_URL : 'redis://localhost:6379' })
-await client.connect()
 
 let qPath = `${QUOTATIONS_PATH}/quotations.txt`
 if(!existsSync(qPath)) qPath = '.db/quotations.txt'
+let isScrolled = false
 
-const liner = new lineByLine(qPath)
-const LAST_LINE = `${QUOTATIONS_PATH}/LAST_LINE`
+let liner: any
+const LAST_LINE = 'quotations_last_line'
 
-if(existsSync(LAST_LINE)){
-    let chunk: false | Buffer
-    let lastLine = readFileSync(LAST_LINE).toString('utf8').trim()
-    while(chunk = liner.next()){
-         if(chunk.toString('utf8').trim() === lastLine) break
+const scrollDown = async () => {
+    liner = new lineByLine(qPath)
+    const client = await getClient()
+    if(await client.exists(LAST_LINE)){
+        let chunk: false | Buffer
+        let lastLine = await client.get(LAST_LINE)
+        if(lastLine) lastLine = lastLine.trim()
+        while(chunk = liner.next()){
+            if(chunk.toString('utf8').trim() === lastLine) break
+        }
     }
 }
 
-const readQuotation = (): EnglishRussian => {
+const readQuotation = async (): Promise<EnglishRussian> => {
+    if(!isScrolled) await scrollDown()
+    isScrolled = true
     let chunk: false | Buffer
     const buff_ru: string[] = []
     const buff_en: string[] = []
 
-    const reg = /^\d\d\d\d-\d\d-\d\d.*GMT$/
+    const reg = /^\d\d\d\d-\d\d-\d\d.*GMT$|^---$/
 
     const spliceAuthor = (arr: string[]) => {
         let [ author ] = arr.splice(-1)
@@ -43,9 +47,9 @@ const readQuotation = (): EnglishRussian => {
     while(chunk = liner.next()){
         const line = chunk.toString('utf8').trim()
         if(reg.test(line)) {
-            writeFileSync(LAST_LINE, line)
+            await client.set(LAST_LINE, line)
             const russian = arrayToString(buff_ru)
-            if(!russian) throw 'russian is required'
+            if(typeof russian !== 'string') throw 'russian is required 1'
             const english = arrayToString(buff_en)
             return  english ? {russian, english} : { russian }
         }
@@ -58,15 +62,15 @@ const readQuotation = (): EnglishRussian => {
 
 let first = true
 
-export function load(){
-    const quotation = first ? readQuotation() : null
+export async function load(){
+    const quotation = first ? await readQuotation() : null
     first = false 
     return quotation
 }
 
 export const actions = {
-    next: function() {
-        return readQuotation()
+    next: async function() {
+        return await readQuotation()
     },
 
     save: async function({ request }){
@@ -74,11 +78,10 @@ export const actions = {
         const english = data.get('english')?.toString().trim()
         const russian = data.get('russian')?.toString().trim()
         if(russian || english) {
-            if(!client.isOpen) await client.connect()
-            const key = `quotation:${shortid()}`
-            if(!russian) throw 'russian is required'
-            await client.json.set(key, '$', english ? {russian, english} : {russian})
+            const repo = await getRepository()
+            if(!russian) throw 'russian is required 2'
+            await repo.save(english ? {russian, english} : {russian})
         } 
-        return readQuotation()
+        return await readQuotation()
     }
 }

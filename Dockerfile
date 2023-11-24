@@ -1,8 +1,7 @@
 FROM node:20-alpine3.17
 
 RUN mkdir /data
-COPY .db/quotations.txt /data
-COPY .db/LAST_LINE /data
+RUN touch /data/README.md
 
 WORKDIR /app
 
