@@ -28,7 +28,9 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@types/shortid": "^0.0.32",
 		"@yababay67/sveltekit-components": "^1.0.2",
+		"shortid": "^2.2.16",
 		"showdown": "^2.1.0"
 	}
 }
