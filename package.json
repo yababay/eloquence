@@ -19,6 +19,7 @@
 		"@types/isaac": "^0.0.3",
 		"@types/n-readlines": "^1.0.6",
 		"@types/showdown": "^2.0.4",
+		"bootstrap-icons": "^1.11.2",
 		"n-readlines": "^1.0.1",
 		"sass": "^1.69.5",
 		"svelte": "^4.0.5",
@@ -30,6 +31,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@yababay67/sveltekit-components": "^1.0.2"
+		"@yababay67/sveltekit-components": "^1.0.6"
 	}
 }
