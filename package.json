@@ -7,7 +7,7 @@
 		"build": "vite build",
 		"cli": "redis-cli --raw",
 		"redis": "docker run -it --rm -p 127.0.0.1:6379:6379 --name redis --mount type=bind,source=/media/portable/.3f-lab/_humanitatian/eloquence/.db,target=/data redis/redis-stack-server:6.2.6-v9",
-		"docker": "npm run build && docker build . -t yababay/eloquence:admin",
+		"docker": "npm run build && docker build . -t yababay/eloquence:noulid",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
@@ -31,6 +31,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@yababay67/sveltekit-components": "^1.0.6"
+		"@yababay67/sveltekit-components": "^1.0.2"
 	}
 }

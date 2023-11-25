@@ -1,9 +1,9 @@
 import lineByLine from 'n-readlines'
 import type { EnglishRussian } from '$lib/types.js'
 import { existsSync, readFileSync } from 'fs'
-import { getRepository, getClient } from '$lib/server'
+import { getClient } from '$lib/server'
 import { QUOTATIONS_PATH } from '$env/static/private'
-import { EntityId } from 'redis-om'
+//import { EntityId } from 'redis-om'
 
 let qPath = `${QUOTATIONS_PATH}/quotations.txt`
 
@@ -88,12 +88,12 @@ export const actions = {
         const data = await request.formData()
         const english = data.get('english')?.toString().trim()
         const russian = data.get('russian')?.toString().trim()
-        if(russian || english) {
+        /*if(russian || english) {
             const repo = await getRepository()
             if(!russian) throw 'russian is required 2'
             const entity = await repo.save(english ? {russian, english} : {russian})
             console.log(entity[EntityId])
-        } 
+        } */
         return await readQuotation()
     }
 }
