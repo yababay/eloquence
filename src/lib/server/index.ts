@@ -1,24 +1,27 @@
-import { Schema } from 'redis-om'
-//import { getRepository as _getRepository } from '@yababay67/sveltekit-components/redis'
-export { getClient } from '@yababay67/sveltekit-components/redis'
-//import isaac from 'isaac'
-//import { factory } from 'ulid'
+import mongoose from 'mongoose'
+import { MONGO_URL } from '$env/static/private'
+import type { Quotation } from '$lib/types'
 
-let seed = 1967 * 4 * 26
+mongoose.set("strictQuery", false)
+let isConnected = false
 
-//function random() {
-//    var x = Math.sin(seed++) * 10000;
-//    return x - Math.floor(x);
-//}
+export const initMongo = async () => {
+    if(!MONGO_URL) throw 'no mongo url'
+    if(!isConnected) await mongoose.connect(MONGO_URL)
+    isConnected = true
+    return mongoose
+}
 
-//const ulid = factory(random)
-
-const SCHEMA_NAME = 'quotations'
-
-/*const quotationsSchema = new Schema (SCHEMA_NAME, {
-    russian: {type: 'text'},
-    english: {type: 'text'},
-    
-}, {idStrategy: async () => ulid()})
-*/
-//export const getRepository = async () => await _getRepository(SCHEMA_NAME, quotationsSchema)
+export const parseForm = async (request: Request): Promise<Quotation> => {
+    await initMongo()
+    const data = await request.formData()
+    const id = data.get('id')?.toString().trim()
+    const foreign = data.get('foreign')?.toString().trim()
+    const caption = data.get('caption')?.toString().trim()
+    const author = data.get('author')?.toString().trim()
+    if(!(caption && author)) throw 'no caption or author'
+    const content: Quotation = { russian: {caption, author}}
+    if(id) content.id = id
+    if(typeof foreign === 'string' && foreign.trim()) content.foreign = foreign
+    return content
+}

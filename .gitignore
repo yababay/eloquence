@@ -1,5 +1,6 @@
 /.svelte-kit
 /.db
+/.mongo
 /.1917
 /build
 /design

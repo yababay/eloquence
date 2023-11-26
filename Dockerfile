@@ -1,7 +1,4 @@
-FROM node:20-alpine3.17
-
-RUN mkdir /data
-RUN touch /data/README.md
+FROM node:20-alpine
 
 WORKDIR /app
 
@@ -11,3 +8,4 @@ RUN npm install --omit=dev
 COPY build/ ./
 
 CMD [ "node", "." ]
+

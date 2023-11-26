@@ -1,14 +1,10 @@
-type TextWithAuthor = {
-    text: string,
-    author: string,
+interface CaptionWithAuthor {
+    caption: string
+    author: string
 }
 
-export type EnglishRussian = {
-    english?: string,
-    russian: string
-}
-
-export type Quotation = {
-    english?: TextWithAuthor,
-    russian: TextWithAuthor
+export interface Quotation {
+    id?: string
+    foreign?: string
+    russian: CaptionWithAuthor
 }
