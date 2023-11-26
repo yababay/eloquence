@@ -1,19 +1,15 @@
 <script lang="ts">
-    import { page } from '$app/stores'
-    import '@yababay67/sveltekit-components/styles/publications.scss'
+    import '@yababay67/sveltekit-components/styles/dummy.scss'
     import './+layout.scss'
     import { Layout } from '@yababay67/sveltekit-components'
     import type { SeoProps, BootstrapSource } from '@yababay67/sveltekit-components/types'
-    import { author, title, subtitle, description, keywords, license, url, bootstrap as BOOTSTRAP_SOURCE } from '../app.json'
+    import { author, title, subtitle, description, keywords, 
+        license, url, bootstrap as WITH_BOOTSTRAP } from '../../app.json'
 
-    const bootstrap = BOOTSTRAP_SOURCE as BootstrapSource
+    const bootstrap = WITH_BOOTSTRAP as BootstrapSource
     const seo: SeoProps = { author, title, subtitle, description, keywords, license, url }
 </script>
 
-{#if $page.url.pathname === '/'}
 <Layout {seo} {bootstrap} >
     <slot />
 </Layout>
-{:else}
-    <slot />
-{/if}

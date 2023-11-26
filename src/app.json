@@ -1,22 +1,10 @@
 {
-    "title": "Случайная цитата",
-    "subtitle": "мысли великих",
-    "description": "Изречения англоязычных авторов с переводом не русский язык",
-    "keywords": "цитата, изречение, афоризм",
+    "title": "Музей красноречия",
+    "subtitle": "афоризмы, цитаты, наблюдения",
+    "description": "Изречения выдающихся людей и интересные цитаты",
+    "keywords": "цитата, изречение, афоризм, высказывание",
     "author": "Михаил Беляков",
     "license": "CC_BY-NC_4.0",
-    "url": "http://quotations.yababay.me",
-    "bootstrap": "remote",
-    "brand": "Quotations",
-    "menu": [
-        { "title": "Home", "href": "https://yababay.me"},
-        { 
-            "title": "Articles", "items": [
-                { "title": "One", "href": "/articles/one"},
-                { "title": "Two", "href": "/articles/two"},
-                { "title": "Three", "href": "/articles/three"}
-            ]
-        },
-        { "title": "Github", "href": "https://github.com/yababay"}
-    ]
+    "url": "http://eloquence.yababay.me",
+    "bootstrap": "remote"
 }

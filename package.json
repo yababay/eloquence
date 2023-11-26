@@ -23,6 +23,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@yababay67/sveltekit-components": "^1.0.7",
 		"mongoose": "^8.0.1"
 	}
 }

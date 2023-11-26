@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 import { MONGO_URL } from '$env/static/private'
 import type { Quotation } from '$lib/types'
+import { QUOTATION_WORD } from './Quotation'
 
 mongoose.set("strictQuery", false)
 let isConnected = false
@@ -10,6 +11,11 @@ export const initMongo = async () => {
     if(!isConnected) await mongoose.connect(MONGO_URL)
     isConnected = true
     return mongoose
+}
+
+export const getQuotationModel = async () => {
+    await initMongo()
+    return mongoose.models[QUOTATION_WORD]
 }
 
 export const parseForm = async (request: Request): Promise<Quotation> => {

@@ -17,8 +17,8 @@
 </script>
 
 <form method="post">
-    <Textarea name="foreign" rows={4} value={foreign}/>
-    <Textarea name="caption" rows={14} value={captionValue}/>
+    <div><Textarea name="foreign" rows={4} value={foreign}/></div>
+    <div><Textarea name="caption" rows={14} value={captionValue}/></div>
     <div class="author-holder">
         <span>Автор:</span>
         <input type="text" class="form-control" name="author" value={authorValue}>
@@ -33,13 +33,11 @@
 
 <style lang="scss">
     %quotation-controls {
-        margin-top: 3rem;
         width: 100%;
         display: flex;
     }
 
     .author-holder {
-        margin: 2rem;
         display: flex;
         justify-content: space-between;
         span {
@@ -49,6 +47,7 @@
 
     form {
         width: 100%;
+        height: 90%;
         max-width: 80ch;
         display: flex;
         flex-direction: column;

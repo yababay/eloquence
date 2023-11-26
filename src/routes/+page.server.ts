@@ -1,12 +1,32 @@
-import { parseForm } from '$lib/server'
-import MongoQuotation from '$lib/server/Quotation'
+import { getQuotationModel } from '$lib/server'
+import type { Quotation } from '$lib/types'
+
+let ids: string[] | undefined
+
+export async function load(): Promise<Quotation>{
+    const model = await getQuotationModel()
+    if(!ids){
+        ids = (await model.find({ used: false }).distinct('_id'))
+        .map((id) => id.toString())
+        .sort((a, b) => Math.random() - .5)
+        console.log(ids)
+    }
+    if(!ids.length){
+        console.log('All records are used!')
+        await model.updateMany({ used: false })
+        ids = undefined
+        return await load()
+    }
+    const id = ids.pop()
+    const quotation =  await model.findById(id)
+    quotation.used = true
+    await quotation.save()
+    if(!quotation) throw 'no quotation'
+    const { russian, foreign } = quotation
+    const { author, caption } = russian
+    return { russian: { caption, author }, foreign }
+}
 
 export const actions = {
-
-    default: async function({ request }) {
-        const content = await parseForm(request)
-        const quot = new MongoQuotation(content)
-        await quot.save()
-        return null
-    }
+    next: async () => null
 }
