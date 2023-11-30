@@ -3,6 +3,7 @@ import { derived } from "svelte/store";
 import { page } from "$app/stores";
 
 export const ssr = false
+export const csr = true
 
 const quotation = derived(page, async $page => {
     let { id } = $page.params
