@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { page } from '$app/stores'
     import '@yababay67/sveltekit-components/styles/publications.scss'
     import './+layout.scss'
     import { Layout } from '@yababay67/sveltekit-components'
@@ -10,10 +9,6 @@
     const seo: SeoProps = { author, title, subtitle, description, keywords, license, url }
 </script>
 
-{#if $page.url.pathname === '/'}
 <Layout {seo} {bootstrap} >
     <slot />
 </Layout>
-{:else}
-    <slot />
-{/if}

@@ -8,3 +8,5 @@ export interface Quotation {
     foreign?: string
     russian: CaptionWithAuthor
 }
+
+export type QuotationWithNext = {quotation: Quotation, next: number}
