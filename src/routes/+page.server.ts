@@ -7,11 +7,11 @@ export async function load(): Promise<Quotation>{
     const model = await getQuotationModel()
     if(!ids){
         ids = (await model.find({ used: false }).distinct('_id'))
-        .map((id) => id.toString())
-        .sort((a, b) => Math.random() - .5)
+        .map((id: any) => id.toString())
+        .sort((a: any, b: any) => Math.random() - .5)
         console.log(ids)
     }
-    if(!ids.length){
+    if(!(ids && ids.length)){
         console.log('All records are used!')
         await model.updateMany({ used: false })
         ids = undefined
