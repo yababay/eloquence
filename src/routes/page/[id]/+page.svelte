@@ -8,7 +8,7 @@
    const { next, quotation } = data
 </script>
 
-<ArticleWithLink label="Начать просмотр" next={$next}>
+<ArticleWithLink next={$next}>
     {#await $quotation}
         &nbsp;
     {:then {foreign, russian} } 

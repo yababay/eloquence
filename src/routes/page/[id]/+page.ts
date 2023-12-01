@@ -1,6 +1,7 @@
 import { PUBLIC_PAGE_COUNT } from "$env/static/public";
 import { derived } from "svelte/store"; 
 import { page } from "$app/stores";
+import { base } from '$app/paths'
 
 export const ssr = false
 export const csr = true
@@ -8,7 +9,7 @@ export const csr = true
 const quotation = derived(page, async $page => {
     let { id } = $page.params
     while(id.length < 3) id = `0${id}`
-    const url = `/quotations-${id}.json`
+    const url = `${base}/quotations-${id}.json`
     const res = await fetch(url)
     if(res.status > 299) throw 'bad bundle'
     const bundle = await res.json()

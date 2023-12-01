@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { base } from '$app/paths'
 
     export let 
         label: string = "Ещё цитата",
@@ -8,7 +9,7 @@
 
 <article>
     <slot />
-    <p class="quotation-next"><a href={`/page/${next}`}>{label}</a></p> 
+    <p class="quotation-next"><a href={`${base}/page/${next}`}>{label}</a></p> 
 </article>
 
 <style lang="scss">
