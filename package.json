@@ -1,15 +1,21 @@
 {
-	"name": "sveltekit-templates",
+	"name": "eloquence",
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
+		"deploy": "vite build && rsync -ar build/ $npm_package_config_ssh_host:/var/www/$npm_package_config_www_prefix.$npm_package_name",
 		"docker:build": "npm run build && docker-compose build",
 		"docker:start": "docker-compose up",
 		"docker:cli": "docker exec -it mongodb /usr/bin/mongo eloquence",
 		"test": "vitest"
 	},
+	"config": {
+		"ssh_host": "random-history",
+		"www_prefix": "me.yababay"
+	},
+
 	"devDependencies": {
 		"@sveltejs/adapter-static": "^2.0.3",
 		"@sveltejs/kit": "^1.27.4",
